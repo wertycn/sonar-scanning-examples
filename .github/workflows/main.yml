@@ -28,16 +28,12 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - run: |
-          cd sonarqube-scanner-maven/maven-multimodule/    
-      - name: Build project with Maven
-        run: mvn clean install
       - name: Depcheck
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
         with:
           project: 'test'
-          path: '.'
+          path: './sonarqube-scanner-maven/maven-multimodule/'
           format: 'HTML' 
       - name: Build and analyze
         env:
@@ -45,4 +41,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
+          cd sonarqube-scanner-maven/maven-multimodule/    
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=test -Dsonar.dependencyCheck.htmlReportPath=./dependency-check-report.html
