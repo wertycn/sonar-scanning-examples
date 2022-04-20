@@ -30,6 +30,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - run: |
           cd sonarqube-scanner-maven/maven-multimodule/    
+      - name: Build project with Maven
+        run: mvn clean install
       - name: Depcheck
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
